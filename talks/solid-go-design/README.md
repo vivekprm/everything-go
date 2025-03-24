@@ -231,6 +231,8 @@ In the context of Go is the structure of your import graph. Now in Go your impor
 
 All things being equal the import graph of a well-designed Go program should be wide and flat rather than tall and narrow.
 
+<img width="1188" alt="Screenshot 2025-03-24 at 11 09 20 PM" src="https://github.com/user-attachments/assets/ff83041d-ba89-48a3-919a-ba21f609cfad" />
+
 If you have packages whose functions can't operate without enlisting the aid of another that's perhaps the sign that the code is not well factored along package boundaries. So **the dependency inversion principle encourages you to push the responsibility for the specifics as high as possible up in your import graph** leaving low level code to deal in terms of abstractions, interfaces.
 
 - The **Single Responsibility Principle** encourages you to structure your functions, your types and your methods into packages that exhibit natural cohesion. The types belong together the functions serve a single purpose they want to be together.
