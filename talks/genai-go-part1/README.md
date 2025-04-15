@@ -241,15 +241,24 @@ In the early days, there were only models.
 
 We called them **Prediction Model**, you send it some input, it gives you some outputs.
 
+<img width="426" alt="Screenshot 2025-04-14 at 7 42 33 PM" src="https://github.com/user-attachments/assets/942ef1cf-a7a0-416d-86c4-4d0618080eb5" />
+
 **Then, retrieval augumented generation (RAG) emerged.**
 Where we provided additional context using RAG. So now I not only have my model but I have interface to Vector DBs and other things for more information.
 
+<img width="551" alt="Screenshot 2025-04-14 at 7 44 37 PM" src="https://github.com/user-attachments/assets/460ff0cb-e06c-49a5-8298-e045140966e6" />
+
 **...and evolved to AI Agents for reasoning and orchestration**
 Agents are like fancy bots but they're much smarter because bots are mostly coded like hardcoded right, you are really putting different conditions in those bots, events come in and you prepare responses. 
+
+<img width="691" alt="Screenshot 2025-04-14 at 7 46 55 PM" src="https://github.com/user-attachments/assets/335569e1-a6c0-496e-9a9d-afb0e45338c2" />
+
 With AI theoretically we don't have to write all those conditions it should be able to adopt to those. Those become sort of AI agents, but in order to that it has to be given additional sort of context and information.
 
 ## Emrging LLM App Stack
 With these many sorts of tools it might become nighmare to mange a monolithic app. So we need frameworks to sort of chaining these things or orchestrating these applications.
+
+![Uploading Screenshot 2025-04-14 at 7.51.04 PM.png…]()
 
 The most famous one out there is LangChain (for details look for Travis from Gophercon UK). Travis wrote Langchain in Go.
 
@@ -367,6 +376,8 @@ But how do we use these models:
 ## Model Serving
 Model serving frameworks are able to take in the actual blob the big model artifact itself, some configuration information about that and then they can make that available over an endpoint.
 
+<img width="364" alt="Screenshot 2025-04-14 at 11 09 40 PM" src="https://github.com/user-attachments/assets/4a79ae53-89ac-4712-9b37-131248ac4aff" />
+
 What a number of these Serving Frameworks do is they basically standardize on the type of model. So we said that there is two main types in this world:
 - Text Generation
 - Stable Diffusion
@@ -443,6 +454,9 @@ Nice thing about the interface here is that it's actually a callback streaming i
 # Firebase Genkit
 Firebase got into the game with generative ai with a tool called **genkit**. 
 
+<img width="984" alt="Screenshot 2025-04-14 at 7 51 04 PM" src="https://github.com/user-attachments/assets/b6bc81d0-a4ec-4ee3-a193-117845e7243e" />
+
+
 Genkit's philosophy is that you shouldn't need to have, so in lots of cases the way these things work with LangChain and LangChain go while you can do it all in Go case, a lot of time you end up with this sort of middle tier server that handles your orchestration and that's kind of the way that like LangChain in the python world was sort of written.
 
 You might endup with your web server something else that's in here your other logic and then you call out to these flows.
@@ -451,11 +465,9 @@ The idea that GenKit tried to go with is that you shouldn't have to have a separ
 
 So they decided we are not going to do it that way:
 
-pic
+<img width="691" alt="Screenshot 2025-04-15 at 10 02 27 AM" src="https://github.com/user-attachments/assets/2d186b2a-7ee9-4a92-9a33-ebac2111c2fa" />
 
 We're going to try to make a more of a library that can be used more like inline or in your actual programs and so they focus on basically three particular areas:
-
-pic
 
 - The ability for some of the apps itself. Basically everybody takes a plug-in architecture, this is how you kind of standardize on interfaces for common things and make plugins to call out to them different types of models, different types of tools.
 - Then be able to have various sort of data pipelines for either you know injest or either post porcessing because you'll see that in some of these applications you will have to do a little bit of data processing, if you want to be able to use your own data within your apps, it won't be like retraining the model or fine-tuning the model but you want to be able to do that. So how can I build those in sort of native languages. 
