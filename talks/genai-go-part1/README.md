@@ -258,7 +258,7 @@ With AI theoretically we don't have to write all those conditions it should be a
 ## Emrging LLM App Stack
 With these many sorts of tools it might become nighmare to mange a monolithic app. So we need frameworks to sort of chaining these things or orchestrating these applications.
 
-![Uploading Screenshot 2025-04-14 at 7.51.04 PM.png…]()
+<img width="984" alt="Screenshot 2025-04-14 at 7 51 04 PM" src="https://github.com/user-attachments/assets/5570566e-e87a-434b-9eb5-0dc349dddd56" />
 
 The most famous one out there is LangChain (for details look for Travis from Gophercon UK). Travis wrote Langchain in Go.
 
