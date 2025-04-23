@@ -1,0 +1,477 @@
+runtime: goroutine stack exceeds 1000000000-byte limit
+runtime: sp=0x1404b700350 stack=[0x1404b700000, 0x1406b700000]
+fatal error: stack overflow
+
+runtime stack:
+runtime.throw({0x102eb814d?, 0x14000098808?})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/panic.go:1101 +0x38 fp=0x16d986d90 sp=0x16d986d60 pc=0x10282da08
+runtime.newstack()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/stack.go:1107 +0x45c fp=0x16d986ed0 sp=0x16d986d90 pc=0x102814a4c
+runtime.morestack()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:342 +0x70 fp=0x16d986ed0 sp=0x16d986ed0 pc=0x102833b40
+
+goroutine 1 gp=0x140000021c0 m=6 mp=0x14000098808 [running]:
+unicode/utf8.ValidString({0x10301ace4?, 0x11?})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/unicode/utf8/utf8.go:491 +0x1e0 fp=0x1404b700350 sp=0x1404b700350 pc=0x10286b960
+strconv.unquote({0x10301ace3, 0x13}, 0x1)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/strconv/quote.go:437 +0x22c fp=0x1404b700420 sp=0x1404b700350 pc=0x10287469c
+strconv.Unquote({0x10301ace3?, 0x0?})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/strconv/quote.go:384 +0x24 fp=0x1404b700450 sp=0x1404b700420 pc=0x102874414
+reflect.StructTag.Lookup({0x10301acde?, 0x0?}, {0x102eaf078, 0x4})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/reflect/type.go:1091 +0x1c4 fp=0x1404b7004a0 sp=0x1404b700450 pc=0x102881164
+reflect.StructTag.Get(...)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/reflect/type.go:1037
+github.com/invopop/jsonschema.(*Reflector).reflectFieldName(0x1406b6ffcf0, {{0x10301acd6, 0x7}, {0x0, 0x0}, {0x1031eec60, 0x103060e80}, {0x10301acde, 0x18}, 0x0, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:1011 +0x80 fp=0x1404b700500 sp=0x1404b7004a0 pc=0x102b1bae0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301acd6, 0x7}, {0x0, 0x0}, {0x1031eec60, 0x103060e80}, {0x10301acde, 0x18}, 0x0, {0x102fd7620, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:505 +0xc8 fp=0x1404b700640 sp=0x1404b700500 pc=0x102b18478
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x14096595608, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1404b700840 sp=0x1404b700640 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x14096595608)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1404b7008a0 sp=0x1404b700840 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1404b700900 sp=0x1404b7008a0 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b700940 sp=0x1404b700900 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b700980 sp=0x1404b700940 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1404b7009e0 sp=0x1404b700980 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b700a20 sp=0x1404b7009e0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b700a60 sp=0x1404b700a20 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x14096595348)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1404b700ab0 sp=0x1404b700a60 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1404b700b10 sp=0x1404b700ab0 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b700b50 sp=0x1404b700b10 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b700b90 sp=0x1404b700b50 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1404b700cd0 sp=0x1404b700b90 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x140965942c8, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1404b700ed0 sp=0x1404b700cd0 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x140965942c8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1404b700f30 sp=0x1404b700ed0 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1404b700f90 sp=0x1404b700f30 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b700fd0 sp=0x1404b700f90 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b701010 sp=0x1404b700fd0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1404b701070 sp=0x1404b701010 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b7010b0 sp=0x1404b701070 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b7010f0 sp=0x1404b7010b0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x14096594008)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1404b701140 sp=0x1404b7010f0 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1404b7011a0 sp=0x1404b701140 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b7011e0 sp=0x1404b7011a0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b701220 sp=0x1404b7011e0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1404b701360 sp=0x1404b701220 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x14096592dc8, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1404b701560 sp=0x1404b701360 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x14096592dc8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1404b7015c0 sp=0x1404b701560 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1404b701620 sp=0x1404b7015c0 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b701660 sp=0x1404b701620 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b7016a0 sp=0x1404b701660 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1404b701700 sp=0x1404b7016a0 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b701740 sp=0x1404b701700 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b701780 sp=0x1404b701740 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x14096592b08)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1404b7017d0 sp=0x1404b701780 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1404b701830 sp=0x1404b7017d0 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b701870 sp=0x1404b701830 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1404b7018b0 sp=0x1404b701870 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1404b7019f0 sp=0x1404b7018b0 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x140965918c8, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1404b701bf0 sp=0x1404b7019f0 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x140965918c8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1404b701c50 sp=0x1404b701bf0 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1404b701cb0 sp=0x1404b701c50 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1404b701cf0 sp=0x1404b701cb0 pc=0x102b16d28
+...4154250 frames elided...
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x1400027edc8, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1406b6fe750 sp=0x1406b6fe550 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x1400027edc8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1406b6fe7b0 sp=0x1406b6fe750 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1406b6fe810 sp=0x1406b6fe7b0 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6fe850 sp=0x1406b6fe810 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6fe890 sp=0x1406b6fe850 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1406b6fe8f0 sp=0x1406b6fe890 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6fe930 sp=0x1406b6fe8f0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6fe970 sp=0x1406b6fe930 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x1400027eb08)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1406b6fe9c0 sp=0x1406b6fe970 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1406b6fea20 sp=0x1406b6fe9c0 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6fea60 sp=0x1406b6fea20 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6feaa0 sp=0x1406b6fea60 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1406b6febe0 sp=0x1406b6feaa0 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x1400027d8c8, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1406b6fede0 sp=0x1406b6febe0 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x1400027d8c8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1406b6fee40 sp=0x1406b6fede0 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1406b6feea0 sp=0x1406b6fee40 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6feee0 sp=0x1406b6feea0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6fef20 sp=0x1406b6feee0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1406b6fef80 sp=0x1406b6fef20 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6fefc0 sp=0x1406b6fef80 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6ff000 sp=0x1406b6fefc0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x1400027d608)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1406b6ff050 sp=0x1406b6ff000 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1406b6ff0b0 sp=0x1406b6ff050 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6ff0f0 sp=0x1406b6ff0b0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6ff130 sp=0x1406b6ff0f0 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1406b6ff270 sp=0x1406b6ff130 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x1400027c588, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1406b6ff470 sp=0x1406b6ff270 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x1400027c588)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1406b6ff4d0 sp=0x1406b6ff470 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1406b6ff530 sp=0x1406b6ff4d0 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6ff570 sp=0x1406b6ff530 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6ff5b0 sp=0x1406b6ff570 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:279 +0x43c fp=0x1406b6ff610 sp=0x1406b6ff5b0 pc=0x102b171ec
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6ff650 sp=0x1406b6ff610 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6ff690 sp=0x1406b6ff650 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectMap(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000}, 0x1400027c2c8)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:439 +0x244 fp=0x1406b6ff6e0 sp=0x1406b6ff690 pc=0x102b17b54
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:332 +0x20c fp=0x1406b6ff740 sp=0x1406b6ff6e0 pc=0x102b16fbc
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6ff780 sp=0x1406b6ff740 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).refOrReflectTypeToSchema(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1030ed000})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:260 +0xbc fp=0x1406b6ff7c0 sp=0x1406b6ff780 pc=0x102b16ccc
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields.func2({{0x10301d3f8, 0xb}, {0x0, 0x0}, {0x1031eec60, 0x1030ed000}, {0x10301d404, 0x16}, 0x50, {0x102fd7648, ...}, ...})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:521 +0x130 fp=0x1406b6ff900 sp=0x1406b6ff7c0 pc=0x102b184e0
+github.com/invopop/jsonschema.(*Reflector).reflectStructFields(0x1406b6ffcf0, 0x1400027b088, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:551 +0x320 fp=0x1406b6ffb00 sp=0x1406b6ff900 pc=0x102b18290
+github.com/invopop/jsonschema.(*Reflector).reflectStruct(0x140000d3cf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0}, 0x1400027b088)
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:476 +0x384 fp=0x1406b6ffb60 sp=0x1406b6ffb00 pc=0x102b17f34
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchema(0x1406b6ffcf0, 0x14000595a40, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:326 +0x280 fp=0x1406b6ffbc0 sp=0x1406b6ffb60 pc=0x102b17030
+github.com/invopop/jsonschema.(*Reflector).reflectTypeToSchemaWithID(0x1406b6ffcf0, 0x1031eec60?, {0x1031eec60, 0x1031ccbe0})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:264 +0x28 fp=0x1406b6ffc00 sp=0x1406b6ffbc0 pc=0x102b16d28
+github.com/invopop/jsonschema.(*Reflector).ReflectFromType(0x1406b6ffcf0, {0x1031eec60, 0x103170940})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:189 +0xd0 fp=0x1406b6ffc90 sp=0x1406b6ffc00 pc=0x102b169a0
+github.com/invopop/jsonschema.(*Reflector).Reflect(0x14000076248?, {0x103170940?, 0x14000277348?})
+	/Users/v.mishra/go/pkg/mod/github.com/invopop/jsonschema@v0.13.0/reflect.go:175 +0x44 fp=0x1406b6ffcd0 sp=0x1406b6ffc90 pc=0x102b168a4
+github.com/firebase/genkit/go/internal/base.InferJSONSchema({0x103170940?, 0x14000277348?})
+	/Users/v.mishra/go/pkg/mod/github.com/firebase/genkit/go@v0.5.1/internal/base/json.go:94 +0x64 fp=0x1406b6ffd70 sp=0x1406b6ffcd0 pc=0x102b673e4
+github.com/firebase/genkit/go/ai.WithInputType({0x103170940, 0x14000277348})
+	/Users/v.mishra/go/pkg/mod/github.com/firebase/genkit/go@v0.5.1/ai/option.go:358 +0xc8 fp=0x1406b6ffdd0 sp=0x1406b6ffd70 pc=0x102c2ef48
+main.main()
+	/Users/v.mishra/go/src/github.com/vivekprm/everything-go/talks/genai-go-part2/genkit-rag/main.go:50 +0x200 fp=0x1406b6fff40 sp=0x1406b6ffdd0 pc=0x102e5eb40
+runtime.main()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:283 +0x284 fp=0x1406b6fffd0 sp=0x1406b6fff40 pc=0x1027fa8e4
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x1406b6fffd0 sp=0x1406b6fffd0 pc=0x102835db4
+
+goroutine 2 gp=0x14000002700 m=nil [force gc (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000072f90 sp=0x14000072f70 pc=0x10282db28
+runtime.goparkunlock(...)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:441
+runtime.forcegchelper()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:348 +0xb8 fp=0x14000072fd0 sp=0x14000072f90 pc=0x1027fac38
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x14000072fd0 sp=0x14000072fd0 pc=0x102835db4
+created by runtime.init.7 in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:336 +0x24
+
+goroutine 17 gp=0x1400009a380 m=nil [GC sweep wait]:
+runtime.gopark(0x1?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x1400006e760 sp=0x1400006e740 pc=0x10282db28
+runtime.goparkunlock(...)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:441
+runtime.bgsweep(0x140000a6000)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgcsweep.go:316 +0x108 fp=0x1400006e7b0 sp=0x1400006e760 pc=0x1027e5ec8
+runtime.gcenable.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:204 +0x28 fp=0x1400006e7d0 sp=0x1400006e7b0 pc=0x1027d9cd8
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x1400006e7d0 sp=0x1400006e7d0 pc=0x102835db4
+created by runtime.gcenable in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:204 +0x6c
+
+goroutine 18 gp=0x1400009a540 m=nil [GC scavenge wait]:
+runtime.gopark(0x10000?, 0x102fd2328?, 0x0?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x1400006ef60 sp=0x1400006ef40 pc=0x10282db28
+runtime.goparkunlock(...)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:441
+runtime.(*scavengerState).park(0x1037871e0)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgcscavenge.go:425 +0x5c fp=0x1400006ef90 sp=0x1400006ef60 pc=0x1027e396c
+runtime.bgscavenge(0x140000a6000)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgcscavenge.go:658 +0xac fp=0x1400006efb0 sp=0x1400006ef90 pc=0x1027e3f0c
+runtime.gcenable.gowrap2()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:205 +0x28 fp=0x1400006efd0 sp=0x1400006efb0 pc=0x1027d9c78
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x1400006efd0 sp=0x1400006efd0 pc=0x102835db4
+created by runtime.gcenable in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:205 +0xac
+
+goroutine 3 gp=0x14000002fc0 m=nil [finalizer wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000073590 sp=0x14000073570 pc=0x10282db28
+runtime.runfinq()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mfinal.go:196 +0x108 fp=0x140000737d0 sp=0x14000073590 pc=0x1027d8cd8
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140000737d0 sp=0x140000737d0 pc=0x102835db4
+created by runtime.createfing in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mfinal.go:166 +0x80
+
+goroutine 4 gp=0x140001e6c40 m=nil [select]:
+runtime.gopark(0x14000073f68?, 0x3?, 0xc8?, 0x3e?, 0x14000073f62?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000073df0 sp=0x14000073dd0 pc=0x10282db28
+runtime.selectgo(0x14000073f68, 0x14000073f5c, 0x140001d9880?, 0x0, 0x0?, 0x1)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/select.go:351 +0x6c4 fp=0x14000073f20 sp=0x14000073df0 pc=0x10280deb4
+go.opencensus.io/stats/view.(*worker).start(0x140001d9880)
+	/Users/v.mishra/go/pkg/mod/go.opencensus.io@v0.24.0/stats/view/worker.go:292 +0x88 fp=0x14000073fb0 sp=0x14000073f20 pc=0x102e01168
+go.opencensus.io/stats/view.init.0.gowrap1()
+	/Users/v.mishra/go/pkg/mod/go.opencensus.io@v0.24.0/stats/view/worker.go:34 +0x28 fp=0x14000073fd0 sp=0x14000073fb0 pc=0x102e005f8
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x14000073fd0 sp=0x14000073fd0 pc=0x102835db4
+created by go.opencensus.io/stats/view.init.0 in goroutine 1
+	/Users/v.mishra/go/pkg/mod/go.opencensus.io@v0.24.0/stats/view/worker.go:34 +0x98
+
+goroutine 5 gp=0x140001e6e00 m=nil [chan receive]:
+runtime.gopark(0x14000201860?, 0x1400000c198?, 0x48?, 0x47?, 0x10298c2a8?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140000746f0 sp=0x140000746d0 pc=0x10282db28
+runtime.chanrecv(0x14000040460, 0x0, 0x1)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/chan.go:664 +0x42c fp=0x14000074770 sp=0x140000746f0 pc=0x1027cbadc
+runtime.chanrecv1(0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/chan.go:506 +0x14 fp=0x140000747a0 sp=0x14000074770 pc=0x1027cb674
+runtime.unique_runtime_registerUniqueMapCleanup.func2(...)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1796
+runtime.unique_runtime_registerUniqueMapCleanup.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1799 +0x3c fp=0x140000747d0 sp=0x140000747a0 pc=0x1027dcefc
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140000747d0 sp=0x140000747d0 pc=0x102835db4
+created by unique.runtime_registerUniqueMapCleanup in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1794 +0x78
+
+goroutine 6 gp=0x140001e76c0 m=nil [select, locked to thread]:
+runtime.gopark(0x14000074fa0?, 0x2?, 0xa8?, 0x4e?, 0x14000074f90?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000074e20 sp=0x14000074e00 pc=0x10282db28
+runtime.selectgo(0x14000074fa0, 0x14000074f8c, 0x0?, 0x0, 0x0?, 0x1)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/select.go:351 +0x6c4 fp=0x14000074f50 sp=0x14000074e20 pc=0x10280deb4
+runtime.ensureSigM.func1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/signal_unix.go:1085 +0x160 fp=0x14000074fd0 sp=0x14000074f50 pc=0x102828720
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x14000074fd0 sp=0x14000074fd0 pc=0x102835db4
+created by runtime.ensureSigM in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/signal_unix.go:1068 +0xd8
+
+goroutine 7 gp=0x140001e7c00 m=3 mp=0x14000079008 [syscall]:
+runtime.sigNoteSleep(0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/os_darwin.go:133 +0x20 fp=0x14000075790 sp=0x14000075750 pc=0x1027f4f20
+os/signal.signal_recv()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/sigqueue.go:149 +0x2c fp=0x140000757b0 sp=0x14000075790 pc=0x10282fc7c
+os/signal.loop()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/os/signal/signal_unix.go:23 +0x1c fp=0x140000757d0 sp=0x140000757b0 pc=0x102c3e37c
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140000757d0 sp=0x140000757d0 pc=0x102835db4
+created by os/signal.Notify.func1.1 in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/os/signal/signal.go:152 +0x28
+
+goroutine 33 gp=0x14000120380 m=nil [select]:
+runtime.gopark(0x140000727a8?, 0x2?, 0xc0?, 0x85?, 0x14000072794?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000072620 sp=0x14000072600 pc=0x10282db28
+runtime.selectgo(0x140000727a8, 0x14000072790, 0x101000000000000?, 0x0, 0x3?, 0x1)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/select.go:351 +0x6c4 fp=0x14000072750 sp=0x14000072620 pc=0x10280deb4
+os/signal.NotifyContext.func1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/os/signal/signal.go:289 +0x68 fp=0x140000727d0 sp=0x14000072750 pc=0x102c3df38
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140000727d0 sp=0x140000727d0 pc=0x102835db4
+created by os/signal.NotifyContext in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/os/signal/signal.go:288 +0x148
+
+goroutine 34 gp=0x14000120540 m=nil [GC worker (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e0710 sp=0x140004e06f0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e07b0 sp=0x140004e0710 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e07d0 sp=0x140004e07b0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e07d0 sp=0x140004e07d0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 35 gp=0x14000120700 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c69178984?, 0x3?, 0xda?, 0x67?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e0f10 sp=0x140004e0ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e0fb0 sp=0x140004e0f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e0fd0 sp=0x140004e0fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e0fd0 sp=0x140004e0fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 36 gp=0x140001208c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c691654ec?, 0x3?, 0xc7?, 0xd2?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e1710 sp=0x140004e16f0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e17b0 sp=0x140004e1710 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e17d0 sp=0x140004e17b0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e17d0 sp=0x140004e17d0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 37 gp=0x14000120a80 m=nil [GC worker (idle)]:
+runtime.gopark(0x1037b0fe0?, 0x1?, 0xa9?, 0x33?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e1f10 sp=0x140004e1ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e1fb0 sp=0x140004e1f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e1fd0 sp=0x140004e1fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e1fd0 sp=0x140004e1fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 38 gp=0x14000120c40 m=nil [GC worker (idle)]:
+runtime.gopark(0x1037b0fe0?, 0x1?, 0xe6?, 0x6?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e2710 sp=0x140004e26f0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e27b0 sp=0x140004e2710 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e27d0 sp=0x140004e27b0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e27d0 sp=0x140004e27d0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 39 gp=0x14000120e00 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c69165157?, 0x3?, 0x32?, 0x0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e2f10 sp=0x140004e2ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e2fb0 sp=0x140004e2f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e2fd0 sp=0x140004e2fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e2fd0 sp=0x140004e2fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 40 gp=0x14000120fc0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c691656e0?, 0x3?, 0x6a?, 0xbd?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000612f10 sp=0x14000612ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x14000612fb0 sp=0x14000612f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x14000612fd0 sp=0x14000612fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x14000612fd0 sp=0x14000612fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 41 gp=0x14000121180 m=nil [GC worker (idle)]:
+runtime.gopark(0x1037b0fe0?, 0x1?, 0xff?, 0x71?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004e3f10 sp=0x140004e3ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004e3fb0 sp=0x140004e3f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004e3fd0 sp=0x140004e3fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004e3fd0 sp=0x140004e3fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 42 gp=0x14000121340 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c69178c48?, 0x3?, 0xb8?, 0x8f?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004dc710 sp=0x140004dc6f0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004dc7b0 sp=0x140004dc710 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004dc7d0 sp=0x140004dc7b0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004dc7d0 sp=0x140004dc7d0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 43 gp=0x14000121500 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c691655e6?, 0x3?, 0x64?, 0x57?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004dcf10 sp=0x140004dcef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004dcfb0 sp=0x140004dcf10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004dcfd0 sp=0x140004dcfb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004dcfd0 sp=0x140004dcfd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 44 gp=0x140001216c0 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c69178837?, 0x3?, 0xd3?, 0xd0?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x14000104f10 sp=0x14000104ef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x14000104fb0 sp=0x14000104f10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x14000104fd0 sp=0x14000104fb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x14000104fd0 sp=0x14000104fd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+
+goroutine 45 gp=0x14000121880 m=nil [GC worker (idle)]:
+runtime.gopark(0x1ec7c691650da?, 0x3?, 0x7a?, 0x79?, 0x0?)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/proc.go:435 +0xc8 fp=0x140004ddf10 sp=0x140004ddef0 pc=0x10282db28
+runtime.gcBgMarkWorker(0x14000100070)
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1423 +0xdc fp=0x140004ddfb0 sp=0x140004ddf10 pc=0x1027dc16c
+runtime.gcBgMarkStartWorkers.gowrap1()
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x28 fp=0x140004ddfd0 sp=0x140004ddfb0 pc=0x1027dc058
+runtime.goexit({})
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/asm_arm64.s:1223 +0x4 fp=0x140004ddfd0 sp=0x140004ddfd0 pc=0x102835db4
+created by runtime.gcBgMarkStartWorkers in goroutine 1
+	/Users/v.mishra/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.24.2.darwin-arm64/src/runtime/mgc.go:1339 +0x140
+exit status 2
