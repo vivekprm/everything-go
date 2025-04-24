@@ -1,0 +1,4 @@
+source
+source/env.sh
+langchain-go-basics/.env
+langchain-go-basics/.vscode
