@@ -1,0 +1,6 @@
+source
+source/env.sh
+langchain-go-basics/.env
+langchain-go-basics/.vscode
+talks/genai-go-part1/*/.vscode
+talks/genai-go-part2/*/.vscode
