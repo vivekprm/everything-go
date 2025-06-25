@@ -246,7 +246,8 @@ func main() {
 
 Here in fanin we actually stitch the two guys together and construct a single channel, from which we can receive from both of them.
 
-pic 
+![image](https://github.com/user-attachments/assets/4c0c7434-27aa-4700-bffd-776a3e50dc13)
+ 
 
 What if for some reason we don't want it and we wanted to have them totally lockstep and synchronous.
 
