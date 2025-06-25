@@ -246,8 +246,7 @@ func main() {
 
 Here in fanin we actually stitch the two guys together and construct a single channel, from which we can receive from both of them.
 
-![image](https://github.com/user-attachments/assets/4c0c7434-27aa-4700-bffd-776a3e50dc13)
- 
+![image](https://github.com/user-attachments/assets/57149915-959b-423a-89a1-47ee57b3c76a)
 
 What if for some reason we don't want it and we wanted to have them totally lockstep and synchronous.
 
@@ -465,7 +464,7 @@ We do the cleanup then send back again of quit channel. Which prints "Joe says: 
 Speaking of round trips, we can also make this crazy by having a ridiculously long sequence of these things, one talking to another
 one. So think of it like this:
 
-pic 
+![image](https://github.com/user-attachments/assets/4c0c7434-27aa-4700-bffd-776a3e50dc13)
 
 You've got a whole bunch of gophers who want to do a Chinese Whispers game, although I think Chinese Whispers with megaphones might 
 sort of make it little weired.
