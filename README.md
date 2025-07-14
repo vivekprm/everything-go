@@ -6,6 +6,7 @@ There is only so much you can do by reading. I recommend to do below projects to
 - Use as you go to tool for scripting and automation.
 
 # Recommended Books & Links
+- https://go.dev/doc/effective_go
 - https://lets-go-further.alexedwards.net/#packages
 - https://quii.gitbook.io/learn-go-with-tests
 - https://interpreterbook.com
