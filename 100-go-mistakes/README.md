@@ -400,9 +400,9 @@ It’s a common mistake made by developers coming from another language with dif
 ## Concepts
 An interface provides a way to specify the behavior of an object. We use interfaces to create common abstractions that multiple objects can implement. What makes Go interfaces so different is that they are satisfied implicitly. There is no explicit keyword like implements to mark that an object X implements interface Y.
 
-To understand what makes interfaces so powerful, we will dig into two popular ones from the standard library: ```io.Reader``` and ```io.Writer```. The io package provides abstractions for I/O primitives. Among these abstractions, ```io.Reader``` relates to reading data from a data source and ```io.Writer``` to writing data to a target, as represented in figure 2.3.
+To understand what makes interfaces so powerful, we will dig into two popular ones from the standard library: ```io.Reader``` and ```io.Writer```. The io package provides abstractions for I/O primitives. Among these abstractions, ```io.Reader``` relates to reading data from a data source and ```io.Writer``` to writing data to a target, as represented in figure below.
 
-pic
+<img width="1124" height="563" alt="Screenshot 2025-07-30 at 10 46 24 AM" src="https://github.com/user-attachments/assets/1007c4ec-c04b-4ddf-a136-66afce0d90e9" />
 
 The io.Reader contains a single ```Read``` method:
 ```go
