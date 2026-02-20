@@ -1,3 +1,5 @@
+https://youtu.be/BNVPE8k6Nmw?si=EUd2YwRAbkR8VeHl
+
 # What does the AI Agent need?
 - Necessary context.
 - Sufficiently powered tooling.
