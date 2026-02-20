@@ -64,3 +64,115 @@ is just a very thin wrapper around this http server which can help the agent by 
 So in short:
 - LLMs empower users to perform actions using human language.
 - MCP servers empower the LLMs to be more accurate and targeted.
+
+We will be using go-sdk to build our MCP server and we will be using the go-sdk client to interface with it. The go-sdk client is going to be used by the AI agent to interact with the MCP server
+
+https://github.com/modelcontextprotocol/go-sdk
+
+We will be building a MCP server that interfaces with the Gophercon agenda so that you can get very good information about Gophercon.
+
+# MCP Server
+Below is very basic simple MCP server that greets.
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+type Input struct {
+	Name string `json:"name" jsonschema:"the name of the person to greet"`
+}
+
+type Output struct {
+	Greeting string `json:"greeting" jsonschema:"the greeting to tell to the user"`
+}
+
+func SayHi(ctx context.Context, req *mcp.CallToolRequest, input Input) (
+	*mcp.CallToolResult,
+	Output,
+	error,
+) {
+	return nil, Output{Greeting: "Hi " + input.Name}, nil
+}
+
+func main() {
+	// Create a server with a single tool.
+	server := mcp.NewServer(&mcp.Implementation{
+		Name:    "greeter",
+		Version: "v1.0.0",
+	}, nil)
+
+	mcp.AddTool(server, &mcp.Tool{
+		Name:        "greet",
+		Description: "say hi",
+	}, SayHi)
+
+	// Run the server over stdin/stdout, until the client disconnects.
+	if err := server.Run(context.Background(), &mcp.StdioTransport{}); err != nil {
+		log.Fatal(err)
+	}
+}
+
+```
+Now build the server to create an executable:
+```
+go build -o myserver main.go
+```
+Now make this binary executable and update the $PATH variable to use this executable.
+
+# MCP Client
+Let's create another directlory called client and create a file main.go in it. This is going to be our client that interfaces with the server.
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+	"os/exec"
+
+	"github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+func main() {
+	ctx := context.Background()
+
+	// Create a new client, with no features.
+	client := mcp.NewClient(&mcp.Implementation{Name: "mcp-client", Version: "v1.0.0"}, nil)
+
+	// Connect to a server over stdin/stdout.
+	transport := &mcp.CommandTransport{Command: exec.Command("myserver")}
+	session, err := client.Connect(ctx, transport, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer session.Close()
+
+	// Call a tool on the server.
+	params := &mcp.CallToolParams{
+		Name:      "greet",
+		Arguments: map[string]any{"name": "you"},
+	}
+	res, err := session.CallTool(ctx, params)
+	if err != nil {
+		log.Fatalf("CallTool failed: %v", err)
+	}
+	if res.IsError {
+		log.Fatal("tool failed")
+	}
+	for _, c := range res.Content {
+		log.Print(c.(*mcp.TextContent).Text)
+	}
+}
+```
+
+Now run the client as below:
+
+```go
+go run main.go
+```
