@@ -15,7 +15,7 @@ but for AI applications enabling them to interact with external tools and resour
 
 Let's look at a practical example:
 
-pic
+<img width="876" height="506" alt="Screenshot 2026-02-20 at 12 14 25 PM" src="https://github.com/user-attachments/assets/8a08ff30-5597-4447-9125-00f32323b128" />
 
 Let's imagine we are running Kubernetes commands and experience a sudden crash. In an AI environment with proper MCP server tools installed, this may be as simple as
 asking. So for example, you are in your IDE, you ask your AI agent something like "Hey, can you create an issue in the Kubernetes repository that describes the bug that I just encountered?"
@@ -48,7 +48,7 @@ Difference is rather than you having to handwrite code that calls every single r
 
 Now let's imagine we have tons of MCP servers that are going to help us.
 
-pic
+<img width="934" height="466" alt="Screenshot 2026-02-20 at 1 02 17 PM" src="https://github.com/user-attachments/assets/785f32ab-79ee-44d0-a2b2-5690c0e49f0d" />
 
 So for example, may be we have a MCP server A that's going to be spun up by our IDE and then it's going to automatically connect an MCP client to it.
 So now when you ask it to update a database, it's going to do it for you using a MCP server A that can help.
