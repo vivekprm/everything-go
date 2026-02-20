@@ -1,0 +1,16 @@
+syntax = "proto3";
+package tutorial1;
+
+option go_package = "./tutorial1";
+
+enum ExampleEnum1 {
+    OPTION_ONE = 0;
+    OPTION_TWO = 1;
+    OPTION_FOUR = 2;
+}
+
+message Person {
+    string name = 1;
+    int32 id = 2;
+    ExampleEnum1 example_enum = 3;
+}

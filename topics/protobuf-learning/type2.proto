@@ -1,0 +1,8 @@
+syntax = "proto3";
+package tutorial2;
+
+enum ExampleEnum1 {
+    OPTION_ONE = 0;
+    OPTION_TWO = 1;
+    OPTION_FOUR = 2;
+}
