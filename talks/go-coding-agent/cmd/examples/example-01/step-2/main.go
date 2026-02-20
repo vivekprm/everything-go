@@ -1,3 +1,5 @@
+// This example shows you the workflow and mechanics for tool calling.
+
 package main
 
 import (
