@@ -10,3 +10,13 @@ example01-step3:
 
 example01-step4:
 	go run cmd/examples/example-01/step-4/main.go
+
+kronk-up:
+	export KRONK_CACHE_MODEL_CONFIG_FILE=zarf/kms/model_config.yaml && \
+	kronk server start
+
+kronk-logs:
+	kronk server logs
+
+kronk-list-models:
+	kronk model list --local

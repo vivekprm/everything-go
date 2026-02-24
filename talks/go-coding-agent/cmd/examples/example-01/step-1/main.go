@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	url   = "http://localhost:11434/v1/chat/completions"
+	url   = "http://localhost:8080/v1/chat/completions"
 	model = "gpt-oss:20b"
 )
 
