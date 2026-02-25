@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/google/uuid"
 )
 
@@ -22,7 +21,7 @@ func setTraceID(ctx context.Context, traceID uuid.UUID) context.Context {
 func GetTraceID(ctx context.Context) uuid.UUID {
 	v, ok := ctx.Value(traceIDKey).(uuid.UUID)
 	if !ok {
-		return uuid.UUID{}.
+		return uuid.UUID{}
 	}
 	return v
 }

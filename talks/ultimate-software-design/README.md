@@ -485,3 +485,96 @@ If it's tiny then we could be fine like for sure at the app layer it probably is
 it's probably going to be abused in terms of its import.
 
 Last thing is that mux function but we don't have a domain yet to bring it in.
+
+We are going to build the domain package now, then we can bring in the mux package and then we can wire it into main and we could test that. We are going to call this domain chatapp for now.
+These domain packages at the app layer they're responsible for:
+- Receiving that external input.
+- Validating that external input.
+- Calling the business logic.
+- Formulating the response or returning errors back to the middleware.
+
+We don't know yet that we have a business layer yet. If we look at the diagram inside cap service
+the two boxes that we have may represnt the business layer but they may be app layer sdk packages providing support. Rightnow there is no business logic, these are just sort of routing stuff. 
+
+We can start them at the app/sdk layer now. We could make these even more generic at some point and
+move them into a foundation layer but we would start at the app/sdk layer, see how we are using it, see if it's reasonable to make it little bit more generalized before we move it. But the question is,
+is it something we can reuse in another project? If the answer is yes, then we foundation it, if the answer is no we keep it at the app/sdk level and then if we feel like there's some business logic in
+there that goes beyond just app layer protocol stuff, then we can move it to the business layer.
+
+Below is our chatapp.go
+```go
+type app struct {
+}
+
+func newApp() *app {
+	return &app{}
+}
+
+func (a *app) test(ctx context.Context, r *http.Request) web.Encoder {
+	return status{
+		Status: "ok",
+	}
+}
+```
+
+Now we have model.go implementing this Encoder interface.
+```go
+type status struct {
+	Status string `json:"status"`
+}
+
+// Encode implements the encoder interface.
+func (app status) Encode() ([]byte, string, error) {
+	data, err := json.Marshal(app)
+	return data, "application/json", err
+}
+```
+
+And finally we have route.go containing the routes
+```go
+func Routes(app *web.App) {
+	api := newApp()
+
+	app.HandlerFuncNoMid(http.MethodGet, "", "/test", api.test)
+}
+```
+
+Here we are using golbal mux.
+
+Now let's add mux package inside sdk.
+
+```go
+// Config contains all the mandatory systems required by handlers.
+type Config struct {
+	Log         *logger.Logger
+}
+
+// WebAPI constructs a http.Handler with all application routes bound.
+func WebAPI(cfg Config) http.Handler {
+	logger := func(ctx context.Context, msg string, args ...any) {
+		cfg.Log.Info(ctx, msg, args...)
+	}
+
+	app := web.NewApp(
+		logger,
+		mid.Logger(cfg.Log),
+		mid.Errors(cfg.Log),
+		mid.Panics(),
+	)
+
+	chatapp.Routes(app)
+	
+	return app
+}
+```
+
+chatapp.Routes binds all the routes. 
+
+In the service project at build time you can say build me an instance of the service with [all the routes](https://github.com/ardanlabs/service/blob/master/api/services/sales/build/all.go) or you can say build me an instance which has [crud routes](https://github.com/ardanlabs/service/blob/master/api/services/sales/build/crud.go) or build me an instance which has [reporting routes](https://github.com/ardanlabs/service/blob/master/api/services/sales/build/reporting.go). It's done very quickly using a variable called route.
+
+When you do go build, the go build tool takes ldflag X let's us change that string
+```sh
+go build -ldflags="-X main.routes=crud"
+```
+
+So at build time you could specify the routes and the mux would be using whatever is defined in that route.
