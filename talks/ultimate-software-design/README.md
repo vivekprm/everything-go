@@ -116,3 +116,372 @@ So this code once get's the signal it will send the signal to the parent process
 We are now able to start and stop our service gracefully. That's the first thing.
 
 If we were going to put this in production, almost at this point we should start setting up staging env, start creating images, start setting up deployment now. Because if you wait till the end to deploy these things, you might have done something that's not deployable or used a tech that you shouldn't have been using.
+
+Next we are trying to get oursleves in a position where we have a Handler that can accept a HTTP request and convert it to a websocket. We are going to use our web frametwork in the service project.
+
+Good thing about the context API is, if something isn't there in the context we don't have to fail and shutdown, you can return a default value.
+
+```go
+var log *logger.Logger
+
+traceIDFn := func(ctx context.Context) string {
+    return web.GetTraceID(ctx)
+}
+
+log = logger.New(os.Stdout, logger.LevelInfo, "CAP", traceIDFn)
+```
+
+Everytime it goes to write a log, it will call the traceIDFn and it will get the trace ID from the context and it will include that in the log. So we will have trace IDs in our logs which is going to be very helpful when we are trying to debug issues in production. If it's not there, it will just  logs without trace ID with all zeros.
+
+Now we have web framework in place, we are going to add App layer, routes and wire them up. In app layer we are going to have two things.
+- domain: Will contain our routes 
+- sdk: packages that will be used by app layer domain, providing support.
+  - If it was needed by both API and APP, we would have put it in foundation layer but since it's only needed by APP layer, we will put it in SDK.
+  - We should keep the packages as close as possible to the code that is using it.
+  - We will copy err, mux, mid from service repo.
+
+This err package is going to be used specifically by App layer. Business layer and foundation layers would return errors in a very traditional way, whatever they want to do. But we have to send error responses back to the client, we have to implement HandlerFunc interface in web.go if we want to send
+anything back to the client.
+
+There are few things that we should look at in error package. 
+- We got this error type called **ErrCode**. It represents a code of a particular error. It implements the MarshalText and UnmarshalText methods, which means we can use it as a field and unmarshal it's data back and forth to a string from an int.
+
+```go
+// ErrCode represents an error code in the system.
+type ErrCode struct {
+	value int
+}
+
+// String returns the string representation of the error code.
+func (ec ErrCode) String() string {
+	return codeNames[ec]
+}
+
+// UnmarshalText implement the unmarshal interface for JSON conversions.
+func (ec *ErrCode) UnmarshalText(data []byte) error {
+	errName := string(data)
+
+	v, exists := codeNumbers[errName]
+	if !exists {
+		return fmt.Errorf("err code %q does not exist", errName)
+	}
+
+	*ec = v
+
+	return nil
+}
+
+// MarshalText implement the marshal interface for JSON conversions.
+func (ec ErrCode) MarshalText() ([]byte, error) {
+	return []byte(ec.String()), nil
+}
+
+// Equal provides support for the go-cmp package and testing.
+func (ec ErrCode) Equal(ec2 ErrCode) bool {
+	return ec.value == ec2.value
+}
+```
+
+- We have defined our own set of error codes to sort of detach ourselves from HTTP. Ideally it might be overkill if you are only using HTTP but if your are going to have a system that's may be using different protocols gRPC, WebSockets etc, then it would be nice to have an abstraction.
+- Below is our error type and it implements Error interface. It has a code and a message. We can use this to send back error responses to the client.
+
+```go
+type Error struct {
+	Code     ErrCode `json:"code"`
+	Message  string  `json:"message"`
+	FuncName string  `json:"-"`
+	FileName string  `json:"-"`
+}
+
+// New constructs an error based on an app error.
+func New(code ErrCode, err error) *Error {
+	pc, filename, line, _ := runtime.Caller(1)
+
+	return &Error{
+		Code:     code,
+		Message:  err.Error(),
+		FuncName: runtime.FuncForPC(pc).Name(),
+		FileName: fmt.Sprintf("%s:%d", filename, line),
+	}
+}
+
+// Errorf constructs an error based on a error message.
+func Errorf(code ErrCode, format string, v ...any) *Error {
+	pc, filename, line, _ := runtime.Caller(1)
+
+	return &Error{
+		Code:     code,
+		Message:  fmt.Sprintf(format, v...),
+		FuncName: runtime.FuncForPC(pc).Name(),
+		FileName: fmt.Sprintf("%s:%d", filename, line),
+	}
+}
+
+// Error implements the error interface.
+func (e *Error) Error() string {
+	return e.Message
+}
+
+// Encode implements the encoder interface.
+func (e *Error) Encode() ([]byte, string, error) {
+	data, err := json.Marshal(e)
+	return data, "application/json", err
+}
+
+// HTTPStatus implements the web package httpStatus interface so the
+// web framework can use the correct http status.
+func (e *Error) HTTPStatus() int {
+	return httpStatus[e.Code]
+}
+
+// Equal provides support for the go-cmp package and testing.
+func (e *Error) Equal(e2 *Error) bool {
+	return e.Code == e2.Code && e.Message == e2.Message
+}
+``` 
+
+Any time we are implementing the error interface using a struct, we need to use pointer semantics. It's because of the internals of how concrete values are stored inside of interfaces.
+
+In Error type we have FuncName and FileName fields. These are not going to be sent back to the client, and that's why we are having dash in the JSON tags. What we are doing there is when we construct an error value we're going to capture what the **FunctionName** and file function name line of code is we are at. 
+That's because we are probably going to have some middleware that' going to log the error but that's always going to be in the same place and when you look at the log it always tells that error occurred in the middleware function. It's not where we logged the error, it's where we constructed the error.
+
+We also have implemented the Encoder interface so we can use this error type to send back error responses to the client. We also have implemented HTTPStatus method so we can use this error type to send back correct HTTP status code to the client.
+
+HTTPStatus is something else that the web framework uses.
+```go
+func (e *Error) HTTPStatus() int {
+	return httpStatus[e.Code]
+}
+```
+
+On the response if you notice, it's going to check if the response implements httpStatus method is implemented on the value that we are passing in, which is essentially going to be the value implementing the Encoder. So what this code says is if the concrete value stored inside the resp also implements HTTPStatus() method then use it.
+
+```go
+func Respond(ctx context.Context, w http.ResponseWriter, resp Encoder) error {
+	if _, ok := resp.(NoResponse); ok {
+		return nil
+	}
+
+	// If the context has been canceled, it means the client is no longer
+	// waiting for a response.
+	if err := ctx.Err(); err != nil {
+		if errors.Is(err, context.Canceled) {
+			return errors.New("client disconnected, do not send response")
+		}
+	}
+
+	statusCode := http.StatusOK
+
+	switch v := resp.(type) {
+	case httpStatus:
+		statusCode = v.HTTPStatus()
+
+	case error:
+		statusCode = http.StatusInternalServerError
+
+	default:
+		if resp == nil {
+			statusCode = http.StatusNoContent
+		}
+	}
+
+	if statusCode == http.StatusNoContent {
+		w.WriteHeader(statusCode)
+		return nil
+	}
+
+	data, contentType, err := resp.Encode()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return fmt.Errorf("respond: encode: %w", err)
+	}
+
+	w.Header().Set("Content-Type", contentType)
+	w.WriteHeader(statusCode)
+
+	if _, err := w.Write(data); err != nil {
+		return fmt.Errorf("respond: write: %w", err)
+	}
+
+	return nil
+}
+```
+
+We're implementing the interface also as well and we are using that so we can convert our code back to
+the HTTP status code, but we are doing it in a way that we are not coupling our error type to HTTP. 
+We don't have a import, it's all about **checking to see that if this behaviour i.e. HTTPStatus() exists is one of the powerful things about Go**.
+
+We are just saying if you want to be able to send back correct HTTP status code, then implement this interface and we will use it. If you don't want to implement this interface, we will just default to 500.
+
+```go
+func (e *Error) HTTPStatus() int {
+	return httpStatus[e.Code]
+}
+```
+
+We should not have met the second switch which means we should never have an error get all the way 
+through. It doesn't mean that the value that's stored inside the encoder also doesn't implement error. It will but that would mean that something sort of leaked and we lost control and we better do a 500.
+
+We are going to use handleFunc and once our handler returns we call respond and do all the things
+auto-magically.
+```go
+func (a *App) HandlerFunc(method string, group string, path string, handlerFunc HandlerFunc, mw ...MidFunc) {
+	handlerFunc = wrapMiddleware(mw, handlerFunc)
+	handlerFunc = wrapMiddleware(a.mw, handlerFunc)
+
+	h := func(w http.ResponseWriter, r *http.Request) {
+		ctx := setWriter(r.Context(), w)
+
+		resp := handlerFunc(ctx, r)
+
+		if err := Respond(ctx, w, resp); err != nil {
+			a.log(ctx, "web-respond", "ERROR", err)
+			return
+		}
+	}
+
+	finalPath := path
+	if group != "" {
+		finalPath = "/" + group + path
+	}
+	finalPath = fmt.Sprintf("%s %s", method, finalPath)
+
+	a.mux.HandleFunc(finalPath, h)
+}
+```
+
+Next we are going to copy middleware such as errors.go, panics.go, logging.go. 
+
+errors.go middleware handles all our errors, it will call the next handler, checks to see if there is error in the response, it constructs one of our errors if it doesn't already exist, it will log 
+everything with the function name and the file name and sometimes you have an internal error that you only want to log and you want to send internal server error the other way, so we go error code for that.
+
+```go
+func Errors(log *logger.Logger) web.MidFunc {
+	m := func(next web.HandlerFunc) web.HandlerFunc {
+		h := func(ctx context.Context, r *http.Request) web.Encoder {
+			resp := next(ctx, r)
+
+			err := checkIsError(resp)
+			if err == nil {
+				return resp
+			}
+
+			var appErr *errs.Error
+			if !errors.As(err, &appErr) {
+				appErr = errs.Errorf(errs.Internal, "Internal Server Error")
+			}
+
+			log.Error(ctx, "handled error during request",
+				"err", err,
+				"source_err_file", path.Base(appErr.FileName),
+				"source_err_func", path.Base(appErr.FuncName))
+
+			if appErr.Code == errs.InternalOnlyLog {
+				appErr = errs.Errorf(errs.Internal, "Internal Server Error")
+			}
+
+			// Send the error to the web package so the error can be
+			// used as the response.
+
+			return appErr
+		}
+
+		return h
+	}
+
+	return m
+}
+```
+
+Logging is going to be for every request, it's good to have started and completed logs in Goroutines,
+if we see started but don't see completed, then we know that something is wrong.
+
+```go
+func Logger(log *logger.Logger) web.MidFunc {
+	m := func(next web.HandlerFunc) web.HandlerFunc {
+		h := func(ctx context.Context, r *http.Request) web.Encoder {
+			now := time.Now()
+
+			path := r.URL.Path
+			if r.URL.RawQuery != "" {
+				path = fmt.Sprintf("%s?%s", path, r.URL.RawQuery)
+			}
+
+			log.Info(ctx, "request started", "method", r.Method, "path", path, "remoteaddr", r.RemoteAddr)
+
+			resp := next(ctx, r)
+
+			var statusCode = errs.None
+			if err := checkIsError(resp); err != nil {
+				statusCode = errs.Internal
+
+				var appErr *errs.Error
+				if errors.As(err, &appErr) {
+					statusCode = appErr.Code
+				}
+			}
+
+			log.Info(ctx, "request completed", "method", r.Method, "path", path, "remoteaddr", r.RemoteAddr,
+				"statuscode", statusCode, "since", time.Since(now).String())
+
+			return resp
+		}
+
+		return h
+	}
+
+	return m
+}
+```
+
+Here we check if there is error, we are propagating it all the way back to the web framework. 
+Middleware framework is going to check to see if the response is an error, if it is an error, it will log it and then send it back to the web framework. 
+
+We could also send the response direclty from the middleware in case of errors but there are chances that thing could fail after we did that and then we couldn't report back on it.
+
+Then the next middleware is for handling panics. The key about handling the panics is calling recover
+inside of a defer.
+
+```go
+func Panics() web.MidFunc {
+	m := func(next web.HandlerFunc) web.HandlerFunc {
+		h := func(ctx context.Context, r *http.Request) (resp web.Encoder) {
+
+			// Defer a function to recover from a panic and set the err return
+			// variable after the fact.
+			defer func() {
+				if rec := recover(); rec != nil {
+					trace := debug.Stack()
+					resp = errs.Errorf(errs.InternalOnlyLog, "PANIC [%v] TRACE[%s]", rec, string(trace))
+				}
+			}()
+
+			return next(ctx, r)
+		}
+
+		return h
+	}
+
+	return m
+}
+```
+
+Remember the defer is executed after the function h returns. Now the problem is that these defer dunctions don't have return type, so how do we return an error back to the calling function? In this 
+case we use named return values, which we are setting from inside defer, so we are now using closures to set it.
+
+We still want to be in control when our handler panics.
+
+# Package Design
+Ideally you don't want packages that contain things and good smell for that is when you don't have a file named after the package. If you look at mid.go it has just CheckIsError function, that's like cheating. This is the package that contains middleware functions. You can get away with containment
+if the import tree to this is really really tiny which it is.
+
+This is very specific containment package, it got middleware functions. It's only going to be used by one other package which is our mux package, which we haven't brought in yet. So it's not going to cause a problem. 
+
+But when you have these containment packages like utils, helpers, commons etc. where like half the project if not more is importing them, you've done very bad things for yourself.
+
+So we got to identify when these containment packages come up where it doesn't make sense to have a 
+file named after it. And we have to be very careful about what is the import tree to that package.
+If it's tiny then we could be fine like for sure at the app layer it probably is tiny because it's very specific to a domain or two but a package like that in the foundation you can pretty much bet
+it's probably going to be abused in terms of its import.
+
+Last thing is that mux function but we don't have a domain yet to bring it in.

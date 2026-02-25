@@ -7,13 +7,14 @@ import (
 	"runtime"
 	"syscall"
 	"ultimate-software-design/chat/foundation/logger"
+	"ultimate-software-design/chat/foundation/web"
 )
 
 func main() {
 	var log *logger.Logger
 
 	traceIDFn := func(ctx context.Context) string {
-		return "" // TODO: Need trace IDs
+		return web.GetTraceID(ctx).String()
 	}
 
 	log = logger.New(os.Stdout, logger.LevelInfo, "CAP", traceIDFn)
