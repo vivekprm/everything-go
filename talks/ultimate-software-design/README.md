@@ -578,3 +578,188 @@ go build -ldflags="-X main.routes=crud"
 ```
 
 So at build time you could specify the routes and the mux would be using whatever is defined in that route.
+
+# Websocket Implementation
+We are going to take use Gorilla Websocket package. And take code from [blockchain project](https://github.com/ardanlabs/blockchain/blob/main/app/services/node/handlers/public/public.go).
+
+In order for both side to know they are still there, there is a ping mechanic.
+
+Let's say we have a package that's listening on the channel, when some data comes in, let's say
+GRead (go routine for reading) it's job is to pull it and send it to the Router package.
+
+Router package figures out the routing and sends it to the client GWrite (Go routine for writing) and then GWrite is responsible for writing it back to the client.
+
+So GRead goroutine just reads and sends data, GWrite goroutine receives something and just writes data. So both have single purpose.
+
+GRead can send data even on API we don't need channels for that, we can just call the function directly. But for GWrite we have two options:
+- Router package can directly write message to the socket.
+- Router knows the GoRoutine that's managing the writes and send data to that GoRoutine and that GoRoutine is responsible for writing it back to the client.
+
+In this case we are going to second option because then we can have both read and write at a single place and it will be easy to fix any issues in future.
+
+```go
+```
+
+
+Below is the code for handshake as we need to do a handshake before we can start sending messages back and forth between the client and the server.
+
+```go
+func (a *app) connect(ctx context.Context, r *http.Request) web.Encoder {
+	// Web socket implemented here.
+	// Just perform basic echo for now.
+	// Make sure we are handling connection drops/issues (context)
+	// How we will map connection to a user.
+	c, err := a.WS.Upgrade(web.GetWriter(ctx), r, nil)
+	if err != nil {
+		return errs.Errorf(errs.FailedPrecondition, "unable to upgrade to websocket: %v", err)
+	}
+	defer c.Close()
+
+	usr, err := a.handshake(ctx, c)
+
+	if err != nil {
+		return errs.Errorf(errs.FailedPrecondition, "handshake failed: %v", err)
+	}
+
+	a.log.Info(ctx, "handshake complete", "user", usr.Name)
+
+	return nil
+}
+
+func (a *app) handshake(ctx context.Context, c *websocket.Conn) (user, error) {
+	if err := c.WriteMessage(websocket.TextMessage, []byte("hello")); err != nil {
+		return user{}, fmt.Errorf("write message: %w", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
+
+	msg, err := a.readMessage(ctx, c)
+	if err != nil {
+		return user{}, fmt.Errorf("read message: %w", err)
+	}
+
+	var usr user
+
+	if err := json.Unmarshal(msg, &usr); err != nil {
+		return user{}, fmt.Errorf("unmarshal message: %w", err)
+	}
+
+	fmt.Printf("handshake successful, got message: %s\n", msg)
+
+	v := fmt.Sprintf("WELCOME %s", usr.Name)
+	if err := c.WriteMessage(websocket.TextMessage, []byte(v)); err != nil {
+		return user{}, fmt.Errorf("write message: %w", err)
+	}
+
+	return usr, nil
+}
+
+func (a *app) readMessage(ctx context.Context, c *websocket.Conn) ([]byte, error) {
+	type response struct {
+		msg []byte
+		err error
+	}
+	ch := make(chan response, 1)
+
+	go func() {
+		a.log.Info(ctx, "starting handshake read")
+		defer a.log.Info(ctx, "completed handshake read")
+		_, msg, err := c.ReadMessage()
+
+		if err != nil {
+			ch <- response{msg: nil, err: err}
+			return
+		}
+
+		ch <- response{msg: msg, err: nil}
+	}()
+
+	var resp response
+
+	select {
+	case <-ctx.Done():
+		c.Close()
+		return nil, fmt.Errorf("handshake timeout: %w", ctx.Err())
+	case resp = <-ch:
+		if resp.err != nil {
+			return nil, fmt.Errorf("handshake failed: %w", resp.err)
+		}
+	}
+
+	return resp.msg, nil
+}
+```
+
+Problem with readMessage above is that it has goroutine bug.
+
+If we had a unbufferred channel and a goroutine writing the message to the channel, we should have a goroutine in receive state otherwise write gets blocked. And if we timedout and left and when ReadMessage() returns it's going to be blocked as we are not listening to the channel anymore.
+
+We are leaking a Goroutine after Goroutine, after Goroutine and so on.
+
+Quickest way to fix this is to make the channel buffered, so that when we timeout and leave, the goroutine can still write to the channel and exit gracefully. So we are not going to have any leaks.
+
+Now to test this code we need client. So let's create client package inside tooling. 
+
+```go
+func main() {
+	if err := hack1("ws://localhost:3000/connect"); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func hack1(url string) error {
+	req := make(http.Header)
+	socket, _, err := websocket.DefaultDialer.Dial(url, req)
+
+	if err != nil {
+		return fmt.Errorf("dial: %w", err)
+	}
+
+	defer socket.Close()
+
+	// -------------------------------------------
+
+	_, msg, err := socket.ReadMessage()
+	if err != nil {
+		return fmt.Errorf("read: %w", err)
+	}
+
+	log.Printf("Received message: %s", msg)
+
+	if string(msg) != "HELLO" {
+		return fmt.Errorf("unexpected message: %s", msg)
+	}
+
+	// -------------------------------------------
+
+	usr := struct{
+		Name string `json:"name"`
+		ID uuid.UUID `json:"id"`
+	}{
+		Name: "Vivek",
+		ID: uuid.New(),
+	}
+
+	data, err := json.Marshal(usr)
+	if err != nil {
+		return fmt.Errorf("marshal: %w", err)
+	}
+
+	if err := socket.WriteMessage(websocket.TextMessage, data); err != nil {
+		return fmt.Errorf("write: %w", err)
+	}
+
+	// -------------------------------------------
+
+	_, msg, err = socket.ReadMessage()
+	if err != nil {
+		return fmt.Errorf("read: %w", err)
+	}
+	
+	log.Printf("Received message: %s", msg)
+
+	return nil
+}
+```
+
