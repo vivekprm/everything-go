@@ -8,5 +8,5 @@ import (
 func Routes(app *web.App) {
 	api := newApp()
 
-	app.HandlerFuncNoMid(http.MethodGet, "", "/test", api.test)
+	app.HandlerFunc(http.MethodGet, "", "/test", api.test)
 }
