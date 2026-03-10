@@ -21,7 +21,8 @@ Now the model is going to send us some reasoning content first. When we deal wit
 **reasoning**. But if we were to use **Qwen** model who also does reasoning, sometime referred to as thinking. It comes back in regular content that comes back
 in a HTML tag.
 
-pic
+<img width="419" height="143" alt="image" src="https://github.com/user-attachments/assets/21dd6e6e-8f29-42b4-a0fb-18503e447f30" />
+
 
 Let's start with this first and make it work.
 
