@@ -23,6 +23,9 @@ func eventHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
+ 	w.Header().Set("Access-Control-Allow-Origin", "*")
+ 	w.Header().Set("Access-Control-Expose-Headers", "Content-Type")
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
